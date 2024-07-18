@@ -52,8 +52,53 @@ def bubble_sort(inp_list):
                 inp_list[j], inp_list[j + 1] = inp_list[j + 1], inp_list[j]
 
 
-def index_sort(inp_list):
-    sorted(inp_list)
+"""
+Предполагается, что первый элемент списка отсортирован. 
+Переходим к следующему элементу, обозначим его х. 
+Если х больше первого, оставляем его на своём месте. 
+Если он меньше, копируем его на вторую позицию, а х устанавливаем как первый элемент.
+
+Переходя к другим элементам несортированного сегмента, 
+перемещаем более крупные элементы в отсортированном сегменте вверх по списку,
+пока не встретим элемент меньше x или не дойдём до конца списка.
+В первом случае x помещается на правильную позицию.
+"""
+
+
+def index_sort(nums):
+    for i in range(1, len(nums)):
+        item_to_insert = nums[i]
+        # Сохраняем ссылку на индекс предыдущего элемента
+        j = i - 1
+        # Элементы отсортированного сегмента перемещаем вперёд, если они больше
+        # элемента для вставки
+        while j >= 0 and nums[j] > item_to_insert:
+            nums[j + 1] = nums[j]
+            j -= 1
+        # Вставляем элемент
+        nums[j + 1] = item_to_insert
+
+
+# Функция сравнения скорости выполнения алгоритмов
+def check_speed(bubble_speed, index_speed):
+    if bubble_speed < index_speed:
+        print('Метод "Пузырьком" быстрее')
+    elif bubble_speed == index_speed:
+        print('Методы работы имеют одинаковую скорость')
+    else:
+        print('Метод "индексами" быстрее')
+
+
+"""
+Функция сдвига на вход получает список и шаг сдвига, далее в цикле по количеству шагов происходит
+удаление элемента с конца списка и вставка его в начало списка
+"""
+
+
+def shift_func(inp_list, step):
+    for _ in range(step):
+        inp_list.insert(0, inp_list.pop(-1))
+    print(inp_list)
 
 
 if __name__ == '__main__':
@@ -79,9 +124,8 @@ if __name__ == '__main__':
     # выполнение функции сортировки
     bubble_sort(inp_first_list_bubble_sort)
     # счетчик конца выполнения функции
-    end_time_first = time()
+    first_list_bubble_sort_time = time() - start_time_first
     # вывод времени выполнения первой сортировки и отсортированного массива
-    first_list_bubble_sort_time = end_time_first - start_time_first
     print("Время выполнения сортировки первого массива методом 'Пузырька':", first_list_bubble_sort_time)
     print("Результат сортировки:", inp_first_list_bubble_sort)
 
@@ -90,9 +134,8 @@ if __name__ == '__main__':
     # выполнение функции сортировки
     bubble_sort(inp_second_list_bubble_sort)
     # счетчик конца выполнения функции
-    end_time_second = time()
+    second_list_bubble_sort_time = time() - start_time_second
     # вывод времени выполнения второй сортировки и отсортированного массива
-    second_list_bubble_sort_time = end_time_second - start_time_second
     print("Время выполнения сортировки второго массива методом 'Пузырька':", second_list_bubble_sort_time)
     print("Результат сортировки:", inp_second_list_bubble_sort)
 
@@ -102,9 +145,8 @@ if __name__ == '__main__':
     # выполнение функции сортировки
     index_sort(inp_first_list_bubble_sort)
     # счетчик конца выполнения функции
-    end_time_first = time()
+    first_list_index_sort_time = time() - start_time_first
     # вывод времени выполнения первой сортировки и отсортированного массива
-    first_list_index_sort_time = end_time_first - start_time_first
     print("Время выполнения сортировки первого массива индексами:", first_list_index_sort_time)
     print("Результат сортировки:", inp_first_list_index_sort)
 
@@ -113,8 +155,16 @@ if __name__ == '__main__':
     # выполнение функции сортировки
     index_sort(inp_second_list_bubble_sort)
     # счетчик конца выполнения функции
-    end_time_second = time()
+    second_list_index_sort_time = time() - start_time_second
     # вывод времени выполнения второй сортировки и отсортированного массива
-    second_list_index_sort_time = end_time_second - start_time_second
-    print("Время выполнения сортировки второго массива методом индексами:", second_list_index_sort_time)
+    print("Время выполнения сортировки второго массива индексами:", second_list_index_sort_time)
     print("Результат сортировки:", inp_second_list_index_sort)
+
+    print('Для первого массива:', end=' ')
+    check_speed(first_list_bubble_sort_time, first_list_index_sort_time)
+    print('Для второго массива:', end=' ')
+    check_speed(second_list_bubble_sort_time, second_list_index_sort_time)
+
+    # Функция сдвига массива из части 1
+    print('Массив из первой части после сдвига:')
+    shift_func(inp_list=part_1_list, step=3)
